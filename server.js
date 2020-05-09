@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = [];
+projectData = {};
 
 // Express to run server and routes
 const express = require('express');
@@ -39,6 +39,9 @@ function sendData(request, response) {
 // Post Route
 app.post('/', addData);
 
+const data = [];
+projectData = { data };
+
 // Post callback
 function addData(request, response) {
   newEntry = {
@@ -47,5 +50,5 @@ function addData(request, response) {
     desc: request.body.desc,
     feelings: request.body.feelings
   }
-  projectData.push(newEntry);
+  data.push(newEntry);
 }

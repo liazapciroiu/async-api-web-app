@@ -1,6 +1,6 @@
 // Personal API Key for OpenWeatherMap API
 let baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip=';
-let apiKey = '&appid=16b70ef6dd00c15037f9e40e9917d330';
+let apiKey = '&appid=16b70ef6dd00c15037f9e40e9917d330&units=imperial';
 
 // DOM elements
 const entryDate = document.getElementById('date');
@@ -45,6 +45,7 @@ const getDataFromAPI = async (baseURL, zip, key) => {
     return data;
   } catch (error) {
     console.log('error', error);
+    updateUIWithError(error);
   }
 }
 
@@ -73,12 +74,19 @@ const getProjectDataAndUpdateUI = async () => {
 
   try {
     const allData = await request.json();
-    entryDate.innerHTML = allData[0].date;
-    entryTemp.innerHTML = `<span>Temperature:</span> ${allData[0].temp}`;
-    entryDesc.innerHTML = `<span>Weather:</span> ${allData[0].desc}`;
-    entryContent.innerHTML = `<span>You were feeling:</span> ${allData[0].feelings}`;
+    entryDate.innerHTML = allData.data[0].date;
+    entryTemp.innerHTML = `<span>Temperature:</span> ${allData.data[0].temp}`;
+    entryDesc.innerHTML = `<span>Weather:</span> ${allData.data[0].desc}`;
+    entryContent.innerHTML = `<span>You were feeling:</span> ${allData.data[0].feelings}`;
     entryHolder.style.backgroundColor = 'var(--pink)';
   } catch (error) {
     console.log('error', error);
+    updateUIWithError(error);
   }
+}
+
+const updateUIWithError = (error) => {
+  entryHolder.innerHTML = `Something went wrong - ${error}`;
+  entryHolder.style.backgroundColor = '#da1414';
+  entryHolder.style.color = '#fff';
 }
